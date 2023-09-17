@@ -9,7 +9,14 @@ import { getFFmpeg } from "@/lib/ffmpeg";
 import { fetchFile } from "@ffmpeg/util";
 import api from "@/lib/axios";
 
-type Status = 'waiting' | 'converting' | 'uploading' | 'generating' | 'sucessess'
+type Status = 'waiting' | 'converting' | 'uploading' | 'generating' | 'success'
+
+const statusMessages = {
+  converting: 'Convertendo....',
+  uploading: 'Carregando...',
+  generating: 'Transcrevendo...',
+  success: 'Finalizado!'
+}
 
 export function VideoInputForm() {
   const [videoFile, setVideoFile] = useState<File | null>(null);
@@ -77,28 +84,33 @@ export function VideoInputForm() {
       return
     }
 
+    setStatus('converting')
+
     // converter video em audio
     const audioFile = await convertVideoToAudio(videoFile)
-    console.log(audioFile)
 
 
     const data =new FormData()
 
     data.append('file', audioFile)
 
+    setStatus('uploading')
+
     const response = await api.post('/videos', data)
-    console.log(response)
 
     const videoId = response.data.video.id
     console.log(videoId)
+
+    setStatus('generating')
 
     await api.post(`/videos/${videoId}/transcription`, {
       prompt,
     })
 
-    console.log('finalizou')
-    console.log(videoId)
+    setStatus('success')
 
+    console.log(videoId, response)
+    
   }
 
   const previewULR = useMemo(() => {
@@ -133,6 +145,7 @@ export function VideoInputForm() {
           <div>
             <Label htmlFor="transcription_prompt">Prompt de transcrição</Label>
             <Textarea
+              disabled={status != 'waiting'}
               ref={promptInputRef}
               id="transcription_prompt"
               className="h-20 leading-relaxed resize-none"
@@ -140,9 +153,13 @@ export function VideoInputForm() {
             />
           </div>
 
-          <Button type="submit" className="w-full" >
-            Carregar video
-            <Upload className="w-4 h-4 ml-2" />
+          <Button disabled={status != 'waiting'} type="submit" className="w-full" >
+              {status === 'waiting' ? (
+                <>
+                  Carregar video
+                  <Upload className="w-4 h-4 ml-2" />
+                </>
+              ) : statusMessages[status]}
           </Button>
       </form>
   )
