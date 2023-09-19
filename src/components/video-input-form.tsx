@@ -1,13 +1,13 @@
 import { FileVideo, Upload } from "lucide-react";
-import { Separator } from "./separator";
-import { Label } from "./label";
-import { Textarea } from "./textarea";
-import { Button } from "./button";
+import { Separator } from "./ui/separator";
+import { Label } from "./ui/label";
+import { Textarea } from "./ui/textarea";
+import { Button } from "./ui/button";
 import { ChangeEvent, useMemo, useRef, useState } from "react";
 
-import { getFFmpeg } from "@/lib/ffmpeg";
+import { getFFmpeg } from "../lib/ffmpeg";
 import { fetchFile } from "@ffmpeg/util";
-import api from "@/lib/axios";
+import api from "../lib/axios";
 
 type Status = 'waiting' | 'converting' | 'uploading' | 'generating' | 'success'
 
@@ -18,7 +18,11 @@ const statusMessages = {
   success: 'Finalizado!'
 }
 
-export function VideoInputForm() {
+interface VideoInputFormProps {
+  onVideoUploaded: (id: string) => void
+}
+
+export function VideoInputForm(props: VideoInputFormProps) {
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [status, setStatus] = useState<Status>("waiting")
 
@@ -109,7 +113,8 @@ export function VideoInputForm() {
 
     setStatus('success')
 
-    console.log(videoId, response)
+
+    props.onVideoUploaded(videoId)
     
   }
 
