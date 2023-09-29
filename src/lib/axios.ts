@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: "upload-ai-server-2o7opvyk6-devthiagolinch.vercel.app"
+    baseURL: "http://127.0.0.1:8080"
 })
 
 export default api
