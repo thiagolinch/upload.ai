@@ -25,6 +25,8 @@ export function App() {
   //  console.log(template)
   //}
 
+  const apiURL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
+
   const {
     input,
     setInput,
@@ -33,14 +35,10 @@ export function App() {
     completion,
     isLoading
   } = useCompletion({
-    api: 'http://127.0.0.1:8080/ai/complete',
+    api: `${apiURL}/ai/complete`,
     body: {
       videoId,
       temperature
-    },
-
-    headers:{
-      'Content-type': 'application/json',
     }
   })
 

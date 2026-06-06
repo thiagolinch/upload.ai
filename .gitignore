@@ -7,10 +7,24 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
-dist
-dist-ssr
-*.local
+/dist
+/dist-ssr
+/apps/api/dist
+/apps/api/tmp
+/apps/web/dist
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Firebase credentials
+serviceAccountKey.json
+apps/api/serviceAccountKey.json
 
 # Editor directories and files
 .vscode/*

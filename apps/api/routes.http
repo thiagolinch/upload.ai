@@ -1,0 +1,38 @@
+# @name get-prompts
+GET http://127.0.0.1:5432/prompts
+
+
+###
+
+# @name upload
+POST http://127.0.0.1:5432/videos
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="SaveTube.mp3"
+Content-Type: audio/mpeg
+
+< ./SaveTube.mp3
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+# @name create-transcription
+POST http://127.0.0.1:5432/videos/34fc8cf9-3ecd-4e1f-bce8-c6ad2ab54e98/transcription
+Content-Type: application/json 
+
+{
+    "prompt": "Clean architeture, ddd"
+}
+
+###
+
+# @name generate-ai-completion
+POST http://127.0.0.1:5432/ai/complete
+Content-Type: application/json
+
+{
+  "videoId": "34fc8cf9-3ecd-4e1f-bce8-c6ad2ab54e98",
+  "temperature": 0.5,
+  "template": "Gere um resumo da transcrição do vídeo informada a seguir: '''{transcription}'''"
+}

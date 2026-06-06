@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: "https://upload-ai-server-6si4.onrender.com"
+    baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000"
 })
 
 export default api

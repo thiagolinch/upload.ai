@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: upload.ai-server-1
+    env: node
+    buildCommand: pnpm install
+    startCommand: node dist/src/server.js
+    envVars:
+      - key: DATABASE_URL
+        value: postgresql://thiago:Scarif2024$@projetos-tl.c7i88oiykryo.us-east-2.rds.amazonaws.com:5432/projetos-tl?schema=public
+      - key: NODE_ENV
+        value: production
