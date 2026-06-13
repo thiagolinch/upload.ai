@@ -1,5 +1,6 @@
 import { FastifyInstance } from "fastify";
 import { db } from "../lib/firebase";
+import { verifyFirebaseToken } from "../middlewares/auth";
 
 import { randomUUID } from "node:crypto"
 import fs from "node:fs"
@@ -17,7 +18,7 @@ export async function uploadVideoRoute(app: FastifyInstance) {
             fieldSize: 1048576 * 35, //35mb
         }
     })
-    app.post("/videos", async (req, res) => {
+    app.post("/videos", { preHandler: [verifyFirebaseToken] }, async (req, res) => {
         const data = await req.file()
 
         if(!data) {
@@ -45,12 +46,15 @@ export async function uploadVideoRoute(app: FastifyInstance) {
         console.log(uploadDestination)
 
         const videoId = randomUUID();
+        const userId = (req as any).user.uid;
+        
         const video = {
             id: videoId,
             name: data.filename,
             path: uploadDestination,
             createdAt: new Date().toISOString(),
-            transcription: null
+            transcription: null,
+            userId: userId
         }
 
         await db.collection("videos").doc(videoId).set(video);

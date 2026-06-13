@@ -2,9 +2,10 @@ import { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { db } from "../lib/firebase";
 import { genAI } from "../lib/gemini";
+import { verifyFirebaseToken } from "../middlewares/auth";
 
 export async function generateAiCompletionRoute(app: FastifyInstance) {
-  app.post('/ai/complete', async (req, reply) => {
+  app.post('/ai/complete', { preHandler: [verifyFirebaseToken] }, async (req, reply) => {
     const bodySchema = z.object({
       videoId: z.string().uuid(),
       template: z.string().optional(),

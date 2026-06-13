@@ -5,13 +5,6 @@
   "scripts": {
     "dev": "pnpm --parallel dev",
     "build": "pnpm --filter ./apps/api build && pnpm --filter ./apps/web build"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "protobufjs",
-      "node"
-    ]
   }
 }
 

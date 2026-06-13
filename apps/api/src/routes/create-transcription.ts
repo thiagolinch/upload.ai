@@ -4,9 +4,10 @@ import { FastifyInstance } from "fastify";
 import { z } from "zod"
 import { db } from "../lib/firebase";
 import { genAI } from "../lib/gemini";
+import { verifyFirebaseToken } from "../middlewares/auth";
 
 export async function createTranscriptionRoute(app: FastifyInstance) {
-    app.post("/videos/:videoId/transcription", async (req, res) => {
+    app.post("/videos/:videoId/transcription", { preHandler: [verifyFirebaseToken] }, async (req, res) => {
         const paramsSchema = z.object({
             videoId: z.string().uuid(),
         })
