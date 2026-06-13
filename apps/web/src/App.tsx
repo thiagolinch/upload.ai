@@ -3,6 +3,8 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
 import { History } from './pages/History';
+import { ServicesHub } from './pages/ServicesHub';
+import { MarketingAutomation } from './pages/MarketingAutomation';
 
 function ProtectedRoute({ children }: { children: JSX.Element }) {
   const { user } = useAuth();
@@ -23,6 +25,22 @@ export function App() {
             element={
               <ProtectedRoute>
                 <History />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/app/services" 
+            element={
+              <ProtectedRoute>
+                <ServicesHub />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/app/marketing" 
+            element={
+              <ProtectedRoute>
+                <MarketingAutomation />
               </ProtectedRoute>
             } 
           />
