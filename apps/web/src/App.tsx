@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
+import { History } from './pages/History';
 
 function ProtectedRoute({ children }: { children: JSX.Element }) {
   const { user } = useAuth();
@@ -19,6 +20,14 @@ export function App() {
           <Route path="/" element={<Login />} />
           <Route 
             path="/app" 
+            element={
+              <ProtectedRoute>
+                <History />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/app/upload" 
             element={
               <ProtectedRoute>
                 <Dashboard />

@@ -11,9 +11,11 @@ import { useCompletion } from 'ai/react';
 
 import { useAuth } from "../contexts/AuthContext";
 import { auth } from "../lib/firebase";
+import { useNavigate } from "react-router-dom";
 
 export function Dashboard() {
   const { logout } = useAuth();
+  const navigate = useNavigate();
   const [videoId, setVideoId] = useState<String | null>(null)
   const [token, setToken] = useState<string | null>(null);
 
@@ -49,6 +51,9 @@ export function Dashboard() {
 
         <div className="flex items-center gap-3">
           <span className="text-sm text-muted-foreground hidden sm:inline">Desenvolvido com 💜</span>
+          <Button variant={"ghost"} onClick={() => navigate('/app')}>
+            Histórico
+          </Button>
           <Button variant={"outline"} onClick={logout}>
             Sair
           </Button>
