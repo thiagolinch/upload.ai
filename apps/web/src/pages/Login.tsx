@@ -1,6 +1,6 @@
 import { useAuth } from '../contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
-import { Video, UploadCloud, Wand2, LogIn } from 'lucide-react';
+import { Video, UploadCloud, Wand2 } from 'lucide-react';
 
 export function Login() {
   const { user, signInWithGoogle } = useAuth();
