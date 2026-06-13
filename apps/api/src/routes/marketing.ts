@@ -80,11 +80,16 @@ export async function marketingAutomationRoute(app: FastifyInstance) {
             console.log(`[Marketing] Scraping concluído. Título: ${title}`);
             console.log(`[Marketing] Conteúdo lido: ${articleContent.substring(0, 100)}...`);
 
-            // Salva a imagem temporariamente
+            // Salva a imagem temporariamente e garante que o diretório tmp exista
+            const tmpDir = path.resolve(__dirname, '../../tmp');
+            if (!fs.existsSync(tmpDir)) {
+                fs.mkdirSync(tmpDir, { recursive: true });
+            }
+
             const fileExtension = path.extname(data.filename) || '.jpg';
             const fileBaseName = path.basename(data.filename, fileExtension);
             const fileUploadName = `${fileBaseName}-${randomUUID()}${fileExtension}`;
-            const uploadDestination = path.resolve(__dirname, '../../tmp', fileUploadName);
+            const uploadDestination = path.resolve(tmpDir, fileUploadName);
             
             await pipeline(data.file, fs.createWriteStream(uploadDestination));
             console.log(`[Marketing] Imagem salva em: ${uploadDestination}`);
@@ -194,7 +199,7 @@ Responda APENAS com o JSON válido, sem blocos de código markdown ou outros tex
                 
                 fs.writeFileSync(finalDestination, finalImageBuffer);
                 
-                const publicUrl = `http://localhost:3000/tmp/${storageFileName}`;
+                const publicUrl = `${req.protocol}://${req.hostname}/tmp/${storageFileName}`;
 
                 generatedAssets[format.name] = {
                     imageUrl: publicUrl,
